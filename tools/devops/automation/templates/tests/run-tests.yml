@@ -32,6 +32,11 @@ steps:
 - pwsh: |
     Write-Host "##vso[task.addattachment type=Distributedtask.Core.Summary;name=MAC_DESTDIR;]/"
     Write-Host "##vso[task.addattachment type=Distributedtask.Core.Summary;name=IOS_DESTDIR;]/"
+    Write-Host "##vso[task.addattachment type=Distributedtask.Core.Summary;name=USE_SYSTEM_SDKS;]true"
+
+    Write-Host "##vso[task.setvariable variable=MAC_DESTDIR]/"
+    Write-Host "##vso[task.setvariable variable=IOS_DESTDIR]/"
+    Write-Host "##vso[task.setvariable variable=USE_SYSTEM_SDKS]true"
   displayName: Set SDK destination dirs 
 
 # remove any old processes that might have been left behind.
