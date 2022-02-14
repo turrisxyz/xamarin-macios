@@ -310,18 +310,18 @@ stages:
 - ${{ each config in parameters.simTestsConfigurations }}:
   - template: templates/tests/stage.yml
     parameters:
-      testPrefix: ${{ config['testPrefix'] }} 
-      stageName: ${{ config['stageName'] }} 
-      displayName: ${{ config['displayName'] }} 
+      testPrefix: ${{ config.testPrefix }} 
+      stageName: ${{ config.stageName }} 
+      displayName: ${{ config.displayName }} 
       iOSDevicePool: $(CIBuildPool) # hardcoded has to be fixed
-      useXamarinStorage: ${{ config['useXamarinStorage'] }} 
-      testsLabels: '' # hardcoded has to be fixed, run all the things, we can split later
-      statusContext: ${{ config['statusContext'] }} 
-      iOSDeviceDemand: ${{ config['iOSDeviceDemand'] }} 
+      useXamarinStorage: ${{ config.useXamarinStorage }} 
+      testsLabels: ${{ config.testsLabels }}
+      statusContext: ${{ config.statusContext }} 
+      iOSDeviceDemand: ${{ config.iOSDeviceDemand }} 
       ${{ if and(ne(variables['Build.Reason'], 'Schedule'), or(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.Reason'], 'Manual'))) }}:
         makeTarget: 'wrench-jenkins' # override when we are running on CI or manually to run all tests
       ${{ else }}:
-        makeTarget: ${{ config['makeTarget'] }} 
+        makeTarget: ${{ config.makeTarget] }} 
       vsdropsPrefix: ${{ variables.vsdropsPrefix }}
       keyringPass: $(pass--lab--mac--builder--keychain)
       gitHubToken: ${{ variables['GitHub.Token'] }}
@@ -333,15 +333,15 @@ stages:
     - ${{ each config in parameters.deviceTestsConfigurations }}:
       - template: templates/tests/stage.yml
         parameters:
-          testPrefix: ${{ config['testPrefix'] }} 
-          stageName: ${{ config['stageName'] }} 
-          displayName: ${{ config['displayName'] }} 
-          iOSDevicePool: ${{ config['iOSDevicePool'] }} 
-          useXamarinStorage: ${{ config['useXamarinStorage'] }} 
-          testsLabels: ${{ config['testsLabels'] }} 
-          statusContext: ${{ config['statusContext'] }} 
-          iOSDeviceDemand: ${{ config['iOSDeviceDemand'] }} 
-          makeTarget: ${{ config['makeTarget'] }} 
+          testPrefix: ${{ config.testPrefix }} 
+          stageName: ${{ config.stageName }} 
+          displayName: ${{ config.displayName }} 
+          iOSDevicePool: ${{ config.iOSDevicePool }} 
+          useXamarinStorage: ${{ config.useXamarinStorage }} 
+          testsLabels: ${{ config.testsLabels }} 
+          statusContext: ${{ config.statusContext }} 
+          iOSDeviceDemand: ${{ config.iOSDeviceDemand }} 
+          makeTarget: ${{ config.makeTarget }} 
           vsdropsPrefix: ${{ variables.vsdropsPrefix }}
           keyringPass: $(pass-XamarinQA-bot-login) 
           gitHubToken: ${{ variables['GitHub.Token'] }}
@@ -352,13 +352,13 @@ stages:
     - ${{ each config in parameters.macTestsConfigurations }}:
       - template: templates/mac/stage.yml
         parameters:
-          stageName: ${{ config['stageName'] }}
-          displayName: ${{ config['displayName'] }}
-          macPool: ${{ config['macPool'] }}
-          useImage: ${{ config['useImage'] }}
-          statusContext: ${{ config['statusContext'] }}
+          stageName: ${{ config.stageName }}
+          displayName: ${{ config.displayName }}
+          macPool: ${{ config.macPool }}
+          useImage: ${{ config.useImage }}
+          statusContext: ${{ config.statusContext }}
           keyringPass: $(pass--lab--mac--builder--keychain)
-          demands: ${{ config['demands'] }}
+          demands: ${{ config.demands }}
 
     - template: templates/windows/stage.yml
       parameters:
