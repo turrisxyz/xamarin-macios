@@ -29,6 +29,11 @@ steps:
     Write-Host "${{ convertToJson(parameters) }}"
   displayName: Display parameters
 
+- pwsh: |
+    Write-Host "##vso[task.addattachment type=Distributedtask.Core.Summary;name=MAC_DESTDIR;]/"
+    Write-Host "##vso[task.addattachment type=Distributedtask.Core.Summary;name=IOS_DESTDIR;]/"
+  displayName: Set SDK destination dirs 
+
 # remove any old processes that might have been left behind.
 - pwsh : |
     Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY/xamarin-macios/tools/devops/automation/scripts/System.psm1
