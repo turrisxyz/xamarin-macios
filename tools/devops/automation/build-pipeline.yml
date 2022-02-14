@@ -321,7 +321,7 @@ stages:
       ${{ if and(ne(variables['Build.Reason'], 'Schedule'), or(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.Reason'], 'Manual'))) }}:
         makeTarget: 'wrench-jenkins' # override when we are running on CI or manually to run all tests
       ${{ else }}:
-        makeTarget: ${{ config.makeTarget] }} 
+        makeTarget: ${{ config.makeTarget }} 
       vsdropsPrefix: ${{ variables.vsdropsPrefix }}
       keyringPass: $(pass--lab--mac--builder--keychain)
       gitHubToken: ${{ variables['GitHub.Token'] }}
