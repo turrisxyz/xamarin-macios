@@ -79,8 +79,42 @@ steps:
     make -C tests/dotnet global.json NuGet.config
   workingDirectory: $(System.DefaultWorkingDirectory)/xamarin-macios
   displayName: 'Generate global.json'
-  continueOnError: false
   timeoutInMinutes: 5
+
+- task: DownloadPipelineArtifact@2
+  displayName: Download artifacts
+  inputs:
+    allowFailedBuilds: true
+    path: $(Build.SourcesDirectory)/artifacts
+
+- bash: |
+    set -x
+    set -e
+    var=$(make -C $(Build.SourcesDirectory)/xamarin-macios/tools/devops print-variable VARIABLE=DOTNET6)
+    DOTNET6=${var#*=}
+    echo "Using dotnet found at $DOTNET6"
+
+    var=$(make -C $(Build.SourcesDirectory)/xamarin-macios/tools/devops print-variable VARIABLE=DOTNET_PLATFORMS)
+    DOTNET_PLATFORMS=${var#*=}
+    echo "Dotnet platforms are '$DOTNET_PLATFORMS'"
+
+    var=$(make -C $(Build.SourcesDirectory)/xamarin-macios/tools/devops print-abspath-variable VARIABLE=DOTNET_NUPKG_DIR)
+    DOTNET_NUPKG_DIR=${var#*=}
+    echo "Using nuget dir $DOTNET_NUPKG_DIR"
+
+    mkdir -p $DOTNET_NUPKG_DIR
+    ls -R $(Build.SourcesDirectory)/artifacts/package
+    cp $(Build.SourcesDirectory)/artifacts/package/* $DOTNET_NUPKG_DIR
+    ls -R $DOTNET_NUPKG_DIR
+
+    NUGET_SOURCES=$(shell grep https://pkgs.dev.azure.com ./NuGet.config | sed -e 's/.*value="//'  -e 's/".*//')
+    $DOTNET6 workload install --skip-manifest-update \
+      $(foreach source,$NUGET_SOURCES,--source $(source)) \
+      --source $DOTNET_NUPKG_DIR --verbosity diag \
+      $(foreach platform,$DOTNET_PLATFORMS,$(shell echo $(platform) | tr A-Z a-z))
+
+  workingDirectory: $(System.DefaultWorkingDirectory)/xamarin-macios
+  displayName: 'Install dotnet workloads'
 
 - bash: |
     set -x
