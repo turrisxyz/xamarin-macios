@@ -66,7 +66,8 @@ steps:
 
 - bash: |
     make -C src build/generator-frameworks.g.cs
-  displayName: Generate generator-frameworks.g.cs
+    make -C src build/ios/Constants.cs
+  displayName: Generate constants files 
 
 - bash: |
     set -x
