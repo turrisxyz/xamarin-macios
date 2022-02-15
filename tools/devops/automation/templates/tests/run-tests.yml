@@ -25,11 +25,6 @@ parameters:
 steps:
 
 - pwsh: |
-    Write-Host "Parameters are:"
-    Write-Host "${{ convertToJson(parameters) }}"
-  displayName: Display parameters
-
-- pwsh: |
     Write-Host "##vso[task.setvariable variable=MAC_DESTDIR]/"
     Write-Host "##vso[task.setvariable variable=IOS_DESTDIR]/"
     Write-Host "##vso[task.setvariable variable=USE_SYSTEM_SDKS]true"

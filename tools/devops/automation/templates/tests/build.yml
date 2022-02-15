@@ -58,11 +58,6 @@ steps:
   parameters:
     keyringPass: ${{ parameters.keyringPass }}
 
-- pwsh: |
-    Write-Host "Parameters are:"
-    Write-Host "${{ convertToJson(parameters) }}"
-  displayName: Display parameters
-
 # Use a cmdlet to check if the space available in the devices root system is larger than 50 gb. If there is not
 # enough space available it:
 # 1. Set the status of the build to error. It is not a failure since no tests have been ran.
