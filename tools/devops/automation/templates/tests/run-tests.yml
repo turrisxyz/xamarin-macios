@@ -65,6 +65,10 @@ steps:
   timeoutInMinutes: 5
 
 - bash: |
+    make -C src build/generator-frameworks.g.cs
+  displayName: Generate generator-frameworks.g.cs
+
+- bash: |
     set -x
     set -e
 
