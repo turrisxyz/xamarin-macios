@@ -20,18 +20,6 @@ steps:
   parameters:
     runTests: ${{ parameters.runTests }}
 
-# Upload full report to vsdrops using the the build numer and id as uuids.
-- ${{ if eq(parameters.runTests, true) }}:
-  - task: ms-vscs-artifact.build-tasks.artifactDropTask-1.artifactDropTask@0
-    displayName: 'Publish Html test report to Artifact Services Drop'
-    inputs:
-      dropServiceURI: 'https://devdiv.artifacts.visualstudio.com/DefaultCollection'
-      dropMetadataContainerName: 'DropMetadata-${{ parameters.testPrefix }}'
-      buildNumber: 'xamarin-macios/device-tests/$(Build.BuildNumber)/$(Build.BuildId)/${{ parameters.testPrefix }}'
-      sourcePath: $(HTML_REPORT_PATH)
-      detailedLog: true
-      usePat: true 
-
 # Upload the API diff to vsdrops to be able to locate it
 - task: ms-vscs-artifact.build-tasks.artifactDropTask-1.artifactDropTask@0
   displayName: 'Publish API diff to Artifact Services Drop'
