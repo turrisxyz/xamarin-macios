@@ -220,12 +220,6 @@ steps:
       $apiGeneratorComment = ""
     }
 
-    if (-not (Test-Path "$Env:TESTS_SUMMARY" -PathType Leaf)) {
-      $summaryDirectory = Split-Path -Path "$Env:TESTS_SUMMARY"
-      New-Item -Path $summaryDirectory -ItemType directory
-      Add-Content -Path "$Env:TESTS_SUMMARY" -Value "No test summary was found (something probably failed before the tests could execute)"
-    }
-
     if ($buildReason -ne "PullRequest" -or $Env:BUILD_PACKAGE -eq "True") {
       Write-Host "Json path is $Env:ARTIFACTS_JSON_PATH"
       $response = New-GitHubSummaryComment -Context "$Env:CONTEXT" -TestSummaryPath "$Env:TESTS_SUMMARY" -Artifacts "$Env:ARTIFACTS_JSON_PATH" -APIDiff "$Env:APIDIFF_JSON_PATH" -APIGeneratorDiffJson "$Env:APIGENERATORDIFF_JSON_PATH" -APIGeneratorDiff $apiGeneratorComment
@@ -243,6 +237,6 @@ steps:
     TESTS_JOBSTATUS: $(TESTS_JOBSTATUS) # set by the runTests step
     TESTS_SUMMARY: $(TEST_SUMMARY_PATH)
     ACCESSTOKEN: $(System.AccessToken)
-  displayName: 'Add summaries'
-  condition: always()
+  displayName: 'Create API diff GitHup comment'
+  enabled: false
   timeoutInMinutes: 10
