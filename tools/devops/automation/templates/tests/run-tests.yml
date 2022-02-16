@@ -104,7 +104,8 @@ steps:
 
     mkdir -p $DOTNET_NUPKG_DIR
     ls -R $(Build.SourcesDirectory)/artifacts/package
-    cp $(Build.SourcesDirectory)/artifacts/package/* $DOTNET_NUPKG_DIR
+    cp $(Build.SourcesDirectory)/artifacts/package/*.nupkg $DOTNET_NUPKG_DIR
+    cp $(Build.SourcesDirectory)/artifacts/package/*.pkg $DOTNET_NUPKG_DIR
     ls -R $DOTNET_NUPKG_DIR
 
     NUGET_SOURCES=$(shell grep https://pkgs.dev.azure.com ./NuGet.config | sed -e 's/.*value="//'  -e 's/".*//')
