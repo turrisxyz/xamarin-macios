@@ -90,6 +90,16 @@ steps:
 - bash: |
     set -x
     set -e
+
+    make global6.json
+    make -C builds dotnet
+  workingDirectory: $(System.DefaultWorkingDirectory)/xamarin-macios
+  displayName: Boostrap dotnet
+  timeoutInMinutes: 30
+
+- bash: |
+    set -x
+    set -e
     var=$(make -C $(Build.SourcesDirectory)/xamarin-macios/tools/devops print-variable VARIABLE=DOTNET6)
     DOTNET6=${var#*=}
     echo "Using dotnet found at $DOTNET6"
@@ -116,16 +126,6 @@ steps:
 
   workingDirectory: $(System.DefaultWorkingDirectory)/xamarin-macios
   displayName: 'Install dotnet workloads'
-
-- bash: |
-    set -x
-    set -e
-
-    make global6.json
-    make -C builds dotnet
-  workingDirectory: $(System.DefaultWorkingDirectory)/xamarin-macios
-  displayName: Boostrap dotnet
-  timeoutInMinutes: 30
 
 - bash: |
     set -x
