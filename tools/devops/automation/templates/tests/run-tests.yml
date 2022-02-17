@@ -130,7 +130,10 @@ steps:
       PLATFORMS="$PLATFORMS $CURRENT"
     done
 
+    rm global.json
+    cp global6.json global.json
     $DOTNET6 workload install --skip-manifest-update $SOURCES --source $DOTNET_NUPKG_DIR --verbosity diag $PLATFORMS
+    make global.json
 
   workingDirectory: $(System.DefaultWorkingDirectory)/xamarin-macios
   displayName: 'Install dotnet workloads'
