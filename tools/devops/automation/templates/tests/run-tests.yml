@@ -100,6 +100,7 @@ steps:
 - bash: |
     set -x
     set -e
+
     var=$(make -C $(Build.SourcesDirectory)/xamarin-macios/tools/devops print-variable VARIABLE=DOTNET6)
     DOTNET6=${var#*=}
     echo "Using dotnet found at $DOTNET6"
@@ -111,6 +112,28 @@ steps:
     var=$(make -C $(Build.SourcesDirectory)/xamarin-macios/tools/devops print-abspath-variable VARIABLE=DOTNET_NUPKG_DIR)
     DOTNET_NUPKG_DIR=${var#*=}
     echo "Using nuget dir $DOTNET_NUPKG_DIR"
+
+    echo "Build WorkloadRollback.json"
+    VERSIONS=""
+
+    var=$(make -C $(Build.SourcesDirectory)/xamarin-macios/tools/devops print-abspath-variable VARIABLE=IOS_NUGET_VERSION_FULL)
+    IOS_NUGET_VERSION_FULL=${var#*=}
+
+    var=$(make -C $(Build.SourcesDirectory)/xamarin-macios/tools/devops print-abspath-variable VARIABLE=TVOS_NUGET_VERSION_FULL)
+    TVOS_NUGET_VERSION_FULL=${var#*=}
+
+    var=$(make -C $(Build.SourcesDirectory)/xamarin-macios/tools/devops print-abspath-variable VARIABLE=MACOS_NUGET_VERSION_FULL)
+    MACOS_NUGET_VERSION_FULL=${var#*=}
+
+    var=$(make -C $(Build.SourcesDirectory)/xamarin-macios/tools/devops print-abspath-variable VARIABLE=MACCATALYST_NUGET_VERSION_FULL)
+    MACCATALYST_NUGET_VERSION_FULL=${var#*=}
+
+    echo "{" >  "WorkloadRollback.json"
+    echo "\"microsoft.net.sdk.ios\": \"$IOS_NUGET_VERSION_FULL\"," >>  "WorkloadRollback.json"
+    echo "\"microsoft.net.sdk.tvos\": \"$TVOS_NUGET_VERSION_FULL\"," >>  "WorkloadRollback.json"
+    echo "\"microsoft.net.sdk.macos\": \"$MACOS_NUGET_VERSION_FULL\"," >>  "WorkloadRollback.json"
+    echo "\"microsoft.net.sdk.maccatalyst\": \"$MACCATALYST_NUGET_VERSION_FULL\"" >>  "WorkloadRollback.json"
+    echo "}" >>  "WorkloadRollback.json"
 
     mkdir -p $DOTNET_NUPKG_DIR
     ls -R $(Build.SourcesDirectory)/artifacts/package
@@ -132,8 +155,7 @@ steps:
 
     rm global.json
     cp global6.json global.json
-    $DOTNET6 workload install --skip-manifest-update $SOURCES --source $DOTNET_NUPKG_DIR --verbosity diag $PLATFORMS
-    make global.json
+    $DOTNET6 workload install --from-rollback-file WorkloadRollback.json --skip-manifest-update $SOURCES --source $DOTNET_NUPKG_DIR --verbosity diag $PLATFORMS
 
   workingDirectory: $(System.DefaultWorkingDirectory)/xamarin-macios
   displayName: 'Install dotnet workloads'
