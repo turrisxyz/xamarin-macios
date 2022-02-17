@@ -167,6 +167,7 @@ steps:
     make -C src build/ios.rsp
     make -C src build/ios-defines.rsp
     make -C src build/tvos-defines.rsp
+    make -C src build/dotnet/macos-defines-dotnet.rsp
   workingDirectory: $(System.DefaultWorkingDirectory)/xamarin-macios
   displayName: Generate rsp files
   timeoutInMinutes: 30
