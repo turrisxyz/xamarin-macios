@@ -135,6 +135,9 @@ steps:
     echo "\"microsoft.net.sdk.maccatalyst\": \"$MACCATALYST_NUGET_VERSION_FULL\"" >>  "WorkloadRollback.json"
     echo "}" >>  "WorkloadRollback.json"
 
+    echo "Rollback file contents:" 
+    echo "$(cat WorkloadRollback.json)"
+
     mkdir -p $DOTNET_NUPKG_DIR
     ls -R $(Build.SourcesDirectory)/artifacts/package
     cp $(Build.SourcesDirectory)/artifacts/package/*.nupkg $DOTNET_NUPKG_DIR
