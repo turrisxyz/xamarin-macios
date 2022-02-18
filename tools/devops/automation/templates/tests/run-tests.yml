@@ -116,16 +116,16 @@ steps:
     echo "Build WorkloadRollback.json"
     VERSIONS=""
 
-    var=$(make -C $(Build.SourcesDirectory)/xamarin-macios/tools/devops print-abspath-variable VARIABLE=IOS_NUGET_VERSION_FULL)
+    var=$(make -C $(Build.SourcesDirectory)/xamarin-macios/tools/devops print-variable VARIABLE=IOS_NUGET_VERSION_FULL)
     IOS_NUGET_VERSION_FULL=${var#*=}
 
-    var=$(make -C $(Build.SourcesDirectory)/xamarin-macios/tools/devops print-abspath-variable VARIABLE=TVOS_NUGET_VERSION_FULL)
+    var=$(make -C $(Build.SourcesDirectory)/xamarin-macios/tools/devops print-variable VARIABLE=TVOS_NUGET_VERSION_FULL)
     TVOS_NUGET_VERSION_FULL=${var#*=}
 
-    var=$(make -C $(Build.SourcesDirectory)/xamarin-macios/tools/devops print-abspath-variable VARIABLE=MACOS_NUGET_VERSION_FULL)
+    var=$(make -C $(Build.SourcesDirectory)/xamarin-macios/tools/devops print-variable VARIABLE=MACOS_NUGET_VERSION_FULL)
     MACOS_NUGET_VERSION_FULL=${var#*=}
 
-    var=$(make -C $(Build.SourcesDirectory)/xamarin-macios/tools/devops print-abspath-variable VARIABLE=MACCATALYST_NUGET_VERSION_FULL)
+    var=$(make -C $(Build.SourcesDirectory)/xamarin-macios/tools/devops print-variable VARIABLE=MACCATALYST_NUGET_VERSION_FULL)
     MACCATALYST_NUGET_VERSION_FULL=${var#*=}
 
     echo "{" >  "WorkloadRollback.json"
