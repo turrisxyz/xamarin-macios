@@ -180,6 +180,20 @@ steps:
   displayName: Build test dependencies
   timeoutInMinutes: 30
 
+- task: DownloadPipelineArtifact@2
+  displayName: Download introspection dependencies 
+  inputs:
+    patterns: '**/package-introspection-dependencies.zip'
+    allowFailedBuilds: true
+    path: $(Build.SourcesDirectory)/artifacts/tmp
+
+- bash: |
+    ls -Rla $(Build.SourcesDirectory)/artifacts/tmp
+    mv $(Build.SourcesDirectory)/artifacts/tmp/package-introspection-dependencies/package-introspection-dependencies.zip .
+    unzip package-introspection-dependencies.zip
+  workingDirectory: $(Build.SourcesDirectory)/xamarin-macios/tools/mtouch
+  displayName: Expand tests.
+
 # Run tests. If we are using xamarin-storage add a periodic command to be executed by xharness, else, since we are using vsdrops do nothing.
 - bash: |
     set -x

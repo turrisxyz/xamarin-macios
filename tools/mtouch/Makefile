@@ -414,3 +414,11 @@ include ../common/Make.common
 # make will automatically consider files created in chained implicit rules as temporary files, and delete them afterwards
 # marking those files as .SECONDARY will prevent that deletion.
 .SECONDARY: Xamarin.iOS.registrar.ios.simulator.a Xamarin.iOS.registrar.ios.device.a Xamarin.WatchOS.registrar.watchos.device.a
+
+package-introspection-dependencies: simlauncher64-sgen simlauncher32-sgen
+	$(Q) mkdir -p $@.tmpdir
+	$(Q) $(CP) -R simlauncher*-sgen* $@.tmpdir
+	@# Generate zip
+	$(Q_GEN) cd $@.tmpdir && zip -9r $(abspath $@) .
+	@# Cleanup
+	$(Q) rm -rf $@.tmpdir
