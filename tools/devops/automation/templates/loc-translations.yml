@@ -3,6 +3,8 @@ steps:
 - template: ./common/checkout.yml
 
 - bash: |
+    echo "pwd: $PWD"
+    echo "Build Source Directory: $Build.SourcesDirectory"
     make LocProject.json
   displayName: 'Generate LocProject.json'
   continueOnError: true
