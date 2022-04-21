@@ -26,7 +26,7 @@ steps:
     ls -la $PWD
   displayName: 'ls Build.SourcesDirectory\\xamarin-macios'
   continueOnError: true
-  workingDirectory: $(Build.SourcesDirectory)\\xamarin-macios)
+  workingDirectory: $(Build.SourcesDirectory)\\xamarin-macios
 
 - task: PowerShell@2
   displayName: "Update LocProject.json"
