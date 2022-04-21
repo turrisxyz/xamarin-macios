@@ -4,7 +4,11 @@ steps:
 
 - bash: |
     echo "pwd: $PWD"
+    ls -la $PWD
     echo "Build Source Directory: $Build.SourcesDirectory"
+    ls -la $Build.SourcesDirectory
+    echo "Build Repository LocalPath: $Build.Repository.LocalPath"
+    ls -la $Build.Repository.LocalPath
     make LocProject.json
   displayName: 'Generate LocProject.json'
   continueOnError: true
