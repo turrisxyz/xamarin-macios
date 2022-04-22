@@ -22,8 +22,7 @@ $jsonFiles | ForEach-Object {
     $afterXammacios = $fullNameString -split "xamarin-macios", 2
     $afterXammacios1 = $afterXammacios[1]
 
-    $localizeDirectory = Convert-Path -Path $LocalizeDirectory
-    $allOfIt = "$($localizeDirectory + $afterXammacios[1])"
+    $allOfIt = "$($LocalizeDirectory + $afterXammacios[1])"
 
     $lclFile = "$($LocalizeDirectory + $afterXammacios1)"
     $projectObject.Projects[0].LocItems += (@{
@@ -34,7 +33,7 @@ $jsonFiles | ForEach-Object {
         fullNameString = $fullNameString
         afterXammacios = $afterXammacios
         afterXammacios1 = $afterXammacios1
-        localizeDirectory = $localizeDirectory
+        LocalizeDirectory = $LocalizeDirectory
         allOfIt = $allOfIt
     })
 }
