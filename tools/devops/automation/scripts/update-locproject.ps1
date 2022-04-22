@@ -22,7 +22,7 @@ $jsonFiles | ForEach-Object {
     $afterXammacios = $fullNameString -split "xamarin-macios", 2
     $afterXammacios1 = $afterXammacios[1]
 
-    $localizeDirectory = Convert-Path $LocalizeDirectory
+    $localizeDirectory = Convert-Path -Path $LocalizeDirectory
     $allOfIt = "$($localizeDirectory + $afterXammacios[1])"
 
     $lclFile = "$($LocalizeDirectory + $afterXammacios1)"
