@@ -19,8 +19,8 @@ $jsonFiles | ForEach-Object {
     $sourceFile = $_.FullName
     $outputPath = "$($_.DirectoryName + "\")"
     $fullNameString = Convert-Path -Path $_.FullName
-    $afterXammacios = $fullNameString.Split("xamarin-macios")
-    $afterXammacios1 = $fullNameString.Split("xamarin-macios")[1]
+    $afterXammacios = $fullNameString -split "xamarin-macios", 2
+    $afterXammacios1 = $afterXammacios[1]
     $lclFile = "$($LocalizeDirectory + $afterXammacios1)"
     $projectObject.Projects[0].LocItems += (@{
         SourceFile = $sourceFile
