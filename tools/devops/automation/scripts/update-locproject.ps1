@@ -10,9 +10,6 @@ $jsonTemplateFiles | ForEach-Object {
     Write-Host "Template loc file generated: $destinationFile"
 }
 
-# xamarin-macios/Localize/loc/cs/dotnet/Templates/Microsoft.iOS.Templates/ios/.template.config/localize/templatestrings.json.lcl
-# "SourceFile":  "D:\\a\\1\\s\\xamarin-macios\\dotnet\\Templates\\Microsoft.tvOS.Templates\\tvos\\.template.config\\localize\\templatestrings.json",
-
 Push-Location "$SourcesDirectory"
 $projectObject = Get-Content $LocProjectPath | ConvertFrom-Json
 $jsonFiles | ForEach-Object {
@@ -20,21 +17,12 @@ $jsonFiles | ForEach-Object {
     $outputPath = "$($_.DirectoryName + "\")"
     $fullNameString = Convert-Path -Path $_.FullName
     $afterXammacios = $fullNameString -split "xamarin-macios", 2
-    $afterXammacios1 = $afterXammacios[1]
-
-    $allOfIt = "$($LocalizeDirectory + $afterXammacios[1])"
-
-    $lclFile = "$($LocalizeDirectory + $afterXammacios1)"
+    $lclFile = "$($LocalizeDirectory + $afterXammacios[1] + ".lcl")"
     $projectObject.Projects[0].LocItems += (@{
         SourceFile = $sourceFile
         CopyOption = "LangIDOnName"
         OutputPath = $outputPath
         LclFile = $lclFile
-        fullNameString = $fullNameString
-        afterXammacios = $afterXammacios
-        afterXammacios1 = $afterXammacios1
-        LocalizeDirectory = $LocalizeDirectory
-        allOfIt = $allOfIt
     })
 }
 Pop-Location
