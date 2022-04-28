@@ -56,27 +56,27 @@ steps:
 #   displayName: "Create a new Localization branch from main"
 #   workingDirectory: $(Build.SourcesDirectory)
 
-# - task: OneLocBuild@2
-#   continueOnError: true
-#   env:
-#     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-#   inputs:
-#     locProj: '$(Build.SourcesDirectory)\\Localize\\LocProject.json'
-#     outDir: '$(Build.ArtifactStagingDirectory)'
-#     ${{ if eq(variables['Build.Reason'], 'Schedule') }}:
-#       isCreatePrSelected: true
-#     ${{ else }}:
-#       isCreatePrSelected: false
-#     packageSourceAuth: patAuth
-#     patVariable: '$(OneLocBuild--PAT)'
-#     isAutoCompletePrSelected: false
-#     prSourceBranchPrefix: 'locfiles'
-#     repoType: gitHub
-#     gitHubPatVariable: '$(GitHub.Token)'
+- task: OneLocBuild@2
+  continueOnError: true
+  env:
+    SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+  inputs:
+    locProj: '$(Build.SourcesDirectory)\\Localize\\LocProject.json'
+    outDir: '$(Build.ArtifactStagingDirectory)'
+    ${{ if eq(variables['Build.Reason'], 'Schedule') }}:
+      isCreatePrSelected: true
+    ${{ else }}:
+      isCreatePrSelected: false
+    packageSourceAuth: patAuth
+    patVariable: '$(OneLocBuild--PAT)'
+    isAutoCompletePrSelected: false
+    prSourceBranchPrefix: 'locfiles'
+    repoType: gitHub
+    gitHubPatVariable: '$(GitHub.Token)'
 
-# - task: PublishBuildArtifacts@1
-#   continueOnError: true
-#   inputs:
-#     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-#     ArtifactName: 'localizationDrop'
-#     publishLocation: 'Container'
+- task: PublishBuildArtifacts@1
+  continueOnError: true
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'localizationDrop'
+    publishLocation: 'Container'
