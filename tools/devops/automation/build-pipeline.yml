@@ -298,7 +298,7 @@ stages:
         steps:
         - template: templates/governance-checks.yml
 
-      - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
+      - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/Localization-SelfCheckout-Test') }}:
         - job: translations
           displayName: 'Loc translations'
           pool:
