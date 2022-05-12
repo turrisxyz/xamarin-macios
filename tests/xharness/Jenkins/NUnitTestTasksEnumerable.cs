@@ -77,7 +77,7 @@ namespace Xharness.Jenkins {
 				TestName = "Install Sources tests",
 				Mode = "iOS",
 				Timeout = TimeSpan.FromMinutes (60),
-				Ignored = !jenkins.TestSelection.IncludeMac && !jenkins.TestSelection.IncludeSimulator,
+				Ignored = !jenkins.TestSelection.IsEnabled (TestLabel.Mac) && !jenkins.TestSelection.IncludeSimulator,
 			};
 			yield return nunitExecutionInstallSource;
 

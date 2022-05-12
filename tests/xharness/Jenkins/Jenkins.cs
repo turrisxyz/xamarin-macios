@@ -94,10 +94,10 @@ namespace Xharness.Jenkins {
 			
 			if (project.IsBclTest ()) {
 				if (!project.IsBclxUnit ())
-					return TestSelection.IncludeBcl || TestSelection.IncludeBCLNUnit;
+					return TestSelection.IsEnabled (TestLabel.Bcl) || TestSelection.IncludeBCLNUnit;
 				if (project.IsMscorlib ()) 
 					return TestSelection.IncludeMscorlib;
-				return TestSelection.IncludeBcl || TestSelection.IncludeBCLxUnit;
+				return TestSelection.IsEnabled(TestLabel.Bcl) || TestSelection.IncludeBCLxUnit;
 			}
 
 			if (!TestSelection.IncludeMonotouch && project.IsMonotouch ())

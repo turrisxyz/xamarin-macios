@@ -22,30 +22,6 @@ namespace Xharness.Jenkins {
 			TestLabel.watchOS |
 			TestLabel.Msbuild;
 
-		public bool IncludeAll {
-			get => selection.HasFlag (TestLabel.All);
-			set => SetEnabled (TestLabel.All, value);
-		}
-		public bool IncludeBcl {
-			get => selection.HasFlag (TestLabel.Bcl);
-			set => SetEnabled (TestLabel.Bcl, value);
-		}
-
-		public bool IncludeMac {
-			get => selection.HasFlag (TestLabel.Mac);
-			set => SetEnabled (TestLabel.Mac, value);
-		}
-
-		public bool IncludeiOS {
-			get => selection.HasFlag (TestLabel.iOS);
-			set => SetEnabled (TestLabel.iOS, value);
-		}
-
-		public bool IncludeiOS64 {
-			get => selection.HasFlag (TestLabel.iOs64);
-			set => SetEnabled (TestLabel.iOs64, value);
-		}
-
 		public bool IncludeiOS32 {
 			get => selection.HasFlag (TestLabel.iOS32);
 			set => SetEnabled (TestLabel.iOS32, value);
@@ -157,7 +133,7 @@ namespace Xharness.Jenkins {
 			set => SetEnabled (TestLabel.SystemPermission, value);
 		}
 
-		void SetEnabled (TestLabel label, bool enable)
+		public void SetEnabled (TestLabel label, bool enable)
 		{
 			if (enable) {
 				selection |= label;
@@ -171,6 +147,9 @@ namespace Xharness.Jenkins {
 			var testLabel = label.GetLabel ();
 			SetEnabled (testLabel, value);
 		}
+
+		public bool IsEnabled (TestLabel label)
+			=> selection.HasFlag (label);
 	}
 	/// <summary>
 	/// Allows to select the tests to be ran depending on certain conditions such as labels of modified files.
@@ -306,16 +285,22 @@ namespace Xharness.Jenkins {
 		{
 			if (labels.Contains ("skip-" + testname + "-tests")) {
 				MainLog.WriteLine ("Disabled '{0}' tests because the label 'skip-{0}-tests' is set.", testname);
-				if (testname == "ios") 
-					selection.IncludeiOS32 = selection.IncludeiOS64 = false;
+				if (testname == "ios") {
+					selection.SetEnabled (TestLabel.iOs64, false);
+					selection.IncludeiOS32 = false;
+				}
+
 				selection.SetEnabled(testname, false);
 				return true;
 			}
 
 			if (labels.Contains ("run-" + testname + "-tests")) {
 				MainLog.WriteLine ("Enabled '{0}' tests because the label 'run-{0}-tests' is set.", testname);
-				if (testname == "ios")
-					selection.IncludeiOS32 = selection.IncludeiOS64 = true;
+				if (testname == "ios") {
+					selection.SetEnabled (TestLabel.iOs64, true);
+					selection.IncludeiOS32 = true;
+				}
+
 				selection.SetEnabled (testname, true);
 				return true;
 			}
@@ -481,8 +466,8 @@ namespace Xharness.Jenkins {
 
 			if (!Harness.INCLUDE_IOS) {
 				MainLog.WriteLine ("The iOS build is disabled, so any iOS tests will be disabled as well.");
-				selection.IncludeiOS = false;
-				selection.IncludeiOS64 = false;
+				selection.SetEnabled(TestLabel.iOS, false);
+				selection.SetEnabled (TestLabel.iOs64, false);
 				selection.IncludeiOS32 = false;
 			}
 
@@ -498,7 +483,7 @@ namespace Xharness.Jenkins {
 
 			if (!Harness.INCLUDE_MAC) {
 				MainLog.WriteLine ("The macOS build is disabled, so any macOS tests will be disabled as well.");
-				selection.IncludeMac = false;
+				selection.SetEnabled(TestLabel.Mac, false);
 			}
 
 			if (!Harness.ENABLE_DOTNET) {
