@@ -3,16 +3,15 @@
 steps:
 
 # do not publish on pull requets
-- ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
-  - task: NuGetCommand@2
-    displayName: 'Publish Nugets to dotnet-eng'
-    inputs:
-      command: push
-      packagesToPush: $(Build.SourcesDirectory)/mlaunch/*.nupkg
-      nuGetFeedType: external
-      publishFeedCredentials: dotnet-eng
-    condition: and(succeeded(), eq(variables['configuration.BuildNugets'], 'True'))
-    continueOnError: true # should not stop the build since is not official just yet.
+- task: NuGetCommand@2
+  displayName: 'Publish Nugets to dotnet-eng'
+  inputs:
+    command: push
+    packagesToPush: $(Build.SourcesDirectory)/mlaunch/*.nupkg
+    nuGetFeedType: external
+    publishFeedCredentials: dotnet-eng
+  condition: and(succeeded(), eq(variables['configuration.BuildNugets'], 'True'))
+  continueOnError: true # should not stop the build since is not official just yet.
 
 # Only executed when the publishing of the nugets failed.
 - bash: |
