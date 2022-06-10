@@ -118,6 +118,7 @@ stages:
       demands: 
       - Agent.OS -equals Darwin
       - macios_image -equals v2.1     # Big Sur image with Xcode 12.4 and 12.5 installed
+      - Agent.Name -equals "XAMBOT-1175.Monterey"
       - ${{ each demand in parameters.extraBotDemands }}:
         - demand
       workspace:
